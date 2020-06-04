@@ -33,7 +33,11 @@ namespace ShopCET45.Web
                 cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
             });
 
+            services.AddTransient<SeedDb>(); //cria a instancia depois de ser usada apaga
 
+            //services.AddSingleton cria e fica ate a app for fechada
+
+            //services.AddScoped cria, usa apaga e cria novamente.
 
             services.Configure<CookiePolicyOptions>(options =>
             {
