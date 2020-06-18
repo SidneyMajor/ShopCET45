@@ -1,6 +1,5 @@
 ﻿using ShopCET45.Web.Data.Entities;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -13,7 +12,7 @@ namespace ShopCET45.Web.Data
         private Random _random;
         public SeedDb(DataContext context)
         {
-           _context = context;
+            _context = context;
             _random = new Random();
         }
 
@@ -38,7 +37,7 @@ namespace ShopCET45.Web.Data
                 Name = name,
                 Price = _random.Next(1000),
                 IsAvailable = true,
-                Stock=_random.Next(100)
+                Stock = _random.Next(100)
             });
         }
     }

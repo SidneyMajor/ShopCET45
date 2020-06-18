@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Policy;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -35,6 +29,7 @@ namespace ShopCET45.Web
 
             services.AddTransient<SeedDb>(); //cria a instancia depois de ser usada apaga
 
+            services.AddScoped<IRepository, Repository>();
             //services.AddSingleton cria e fica ate a app for fechada
 
             //services.AddScoped cria, usa apaga e cria novamente.
