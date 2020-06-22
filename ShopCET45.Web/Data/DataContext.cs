@@ -11,6 +11,9 @@ namespace ShopCET45.Web.Data
     {
         public DbSet<Product> Products { get; set; }
 
+        public DbSet<Country> Countries { get; set; }
+
+
         public DataContext(DbContextOptions<DataContext> options):base(options)
         {            
         }

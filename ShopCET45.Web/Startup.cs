@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ShopCET45.Web.Data;
+using ShopCET45.Web.Data.Entities;
 
 namespace ShopCET45.Web
 {
@@ -29,7 +30,8 @@ namespace ShopCET45.Web
 
             services.AddTransient<SeedDb>(); //cria a instancia depois de ser usada apaga
 
-            services.AddScoped<IRepository, Repository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICountryRepository, CountryRepository>();
             //services.AddSingleton cria e fica ate a app for fechada
 
             //services.AddScoped cria, usa apaga e cria novamente.
