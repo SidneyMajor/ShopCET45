@@ -16,6 +16,7 @@ namespace ShopCET45.Web.Data
             _context = context;
         }
 
+
         public async Task CreatAsync(T entity)
         {
             await _context.Set<T>().AddAsync(entity); // o metudo Set<T> é usado pelo DataContex para generico.

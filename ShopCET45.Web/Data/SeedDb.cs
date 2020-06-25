@@ -1,4 +1,6 @@
-﻿using ShopCET45.Web.Data.Entities;
+﻿using Microsoft.AspNetCore.Identity;
+using ShopCET45.Web.Data.Entities;
+using ShopCET45.Web.Helpers;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,16 +11,43 @@ namespace ShopCET45.Web.Data
     {
         private readonly DataContext _context;
 
-        private Random _random;
-        public SeedDb(DataContext context)
+        private readonly Random _random;
+
+        public readonly  IUserHelper _userHelper;
+
+        public SeedDb(DataContext context, IUserHelper userHelper)
         {
             _context = context;
+            _userHelper = userHelper;
             _random = new Random();
         }
+
+        
 
         public async Task SeedAsync()
         {
             await _context.Database.EnsureCreatedAsync();
+
+            var user = await _userHelper.GetUserByEmailAsync("sidney-major@portugal.pt");
+
+            if(user == null)
+            {
+                user = new User
+                {
+                    FirstName = "sidney",
+                    LastName = "major",
+                    Email = "sidney-major@portugal.pt",
+                    UserName = "sidney-major@portugal.pt",
+                    PhoneNumber = "211234567"
+                };
+
+                var result = await _userHelper.AddUserAsync(user, "123456");//Criar o user com aquela password
+                if(result != IdentityResult.Success)
+                {
+                    throw new InvalidOperationException("Could not create the user in seeder");
+                }
+            }
+       
 
             if(!_context.Products.Any())
             {

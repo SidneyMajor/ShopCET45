@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopCET45.Web.Data;
 using ShopCET45.Web.Data.Entities;
+using ShopCET45.Web.Helpers;
+using System.Threading.Tasks;
 
 namespace ShopCET45.Web.Controllers
 {
     public class ProductsController : Controller
     {
-       
+
         private readonly IProductRepository _productRepository;
 
-        public ProductsController(IProductRepository productRepository)
-        {           
-           _productRepository = productRepository;
+        public readonly IUserHelper _userHelper;
+
+        public ProductsController(IProductRepository productRepository, IUserHelper userHelper)
+        {
+            _productRepository = productRepository;
+            _userHelper = userHelper;
         }
 
         // GET: Products
@@ -29,13 +29,13 @@ namespace ShopCET45.Web.Controllers
         // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if(id == null)
             {
                 return NotFound();
             }
 
             var product = await _productRepository.GetByIdAsync(id.Value);
-            if (product == null)
+            if(product == null)
             {
                 return NotFound();
             }
@@ -58,9 +58,11 @@ namespace ShopCET45.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Product product)
         {
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
-               await _productRepository.CreatAsync(product);               
+                //Todo: Change for the logged user
+                product.User = await _userHelper.GetUserByEmailAsync("sidney-major@portugal.pt");
+                await _productRepository.CreatAsync(product);
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
@@ -70,13 +72,13 @@ namespace ShopCET45.Web.Controllers
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if(id == null)
             {
                 return NotFound();
             }
 
-            var product =  await _productRepository.GetByIdAsync(id.Value);
-            if (product == null)
+            var product = await _productRepository.GetByIdAsync(id.Value);
+            if(product == null)
             {
                 return NotFound();
             }
@@ -90,17 +92,19 @@ namespace ShopCET45.Web.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(Product product)
-        {            
+        {
 
-            if (ModelState.IsValid)
+            if(ModelState.IsValid)
             {
                 try
                 {
+                    //Todo: Change for the logged user
+                    product.User = await _userHelper.GetUserByEmailAsync("sidney-major@portugal.pt");
                     await _productRepository.UpdateAsync(product);
                 }
-                catch (DbUpdateConcurrencyException)
+                catch(DbUpdateConcurrencyException)
                 {
-                    if (! await _productRepository.ExistAsync(product.Id))
+                    if(!await _productRepository.ExistAsync(product.Id))
                     {
                         return NotFound();
                     }
@@ -118,13 +122,13 @@ namespace ShopCET45.Web.Controllers
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            if(id == null)
             {
                 return NotFound();
             }
 
             var product = await _productRepository.GetByIdAsync(id.Value);
-            if (product == null)
+            if(product == null)
             {
                 return NotFound();
             }
