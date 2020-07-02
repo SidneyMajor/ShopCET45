@@ -22,7 +22,7 @@ namespace ShopCET45.Web.Controllers.API
         [HttpGet]
         public IActionResult GetProducts()
         {
-            return Ok(_productRepository.GetAll());  // O metodo OK faz a descerilização para json. ja contem a anotação para do [HttpGet]
+            return Ok(_productRepository.GetAllWithUsers());  // O metodo OK faz a descerilização para json. ja contem a anotação para do [HttpGet]
         }
     }
 }

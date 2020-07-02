@@ -1,0 +1,232 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "resources": [
+    {
+      "type": "Microsoft.Resources/resourceGroups",
+      "name": "CinelSidney",
+      "location": "westeurope",
+      "apiVersion": "2019-10-01"
+    },
+    {
+      "type": "Microsoft.Resources/deployments",
+      "name": "[concat('CinelSidneyDeployment', uniqueString(subscription().subscriptionId))]",
+      "resourceGroup": "CinelSidney",
+      "apiVersion": "2019-10-01",
+      "dependsOn": [
+        "CinelSidney"
+      ],
+      "properties": {
+        "mode": "Incremental",
+        "template": {
+          "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+          "contentVersion": "1.0.0.0",
+          "resources": [
+            {
+              "id": "/subscriptions/74b019a5-1983-44a6-aab1-eff47f02d8c9/resourceGroups/CinelSidney/providers/Microsoft.Web/sites/ShopCET45Sidney",
+              "name": "ShopCET45Sidney",
+              "type": "Microsoft.Web/sites",
+              "kind": "app",
+              "location": "West Europe",
+              "tags": {
+                "hidden-related:/subscriptions/74b019a5-1983-44a6-aab1-eff47f02d8c9/resourceGroups/CinelSidney/providers/Microsoft.Web/serverfarms/ShopCET45SidneyPlan": "empty"
+              },
+              "properties": {
+                "name": "ShopCET45Sidney",
+                "state": "Running",
+                "hostNames": [
+                  "shopcet45sidney.azurewebsites.net"
+                ],
+                "webSpace": "CinelSidney-WestEuropewebspace",
+                "selfLink": "https://waws-prod-am2-161.api.azurewebsites.windows.net:454/subscriptions/74b019a5-1983-44a6-aab1-eff47f02d8c9/webspaces/CinelSidney-WestEuropewebspace/sites/ShopCET45Sidney",
+                "repositorySiteName": "ShopCET45Sidney",
+                "owner": null,
+                "usageState": 0,
+                "enabled": true,
+                "adminEnabled": true,
+                "enabledHostNames": [
+                  "shopcet45sidney.azurewebsites.net",
+                  "shopcet45sidney.scm.azurewebsites.net"
+                ],
+                "siteProperties": {
+                  "metadata": null,
+                  "properties": [
+                    {
+                      "name": "LinuxFxVersion",
+                      "value": ""
+                    },
+                    {
+                      "name": "WindowsFxVersion",
+                      "value": null
+                    }
+                  ],
+                  "appSettings": null
+                },
+                "availabilityState": 0,
+                "sslCertificates": null,
+                "csrs": [],
+                "cers": null,
+                "siteMode": null,
+                "hostNameSslStates": [
+                  {
+                    "name": "shopcet45sidney.azurewebsites.net",
+                    "sslState": 0,
+                    "ipBasedSslResult": null,
+                    "virtualIP": null,
+                    "thumbprint": null,
+                    "toUpdate": null,
+                    "toUpdateIpBasedSsl": null,
+                    "ipBasedSslState": 0,
+                    "hostType": 0
+                  },
+                  {
+                    "name": "shopcet45sidney.scm.azurewebsites.net",
+                    "sslState": 0,
+                    "ipBasedSslResult": null,
+                    "virtualIP": null,
+                    "thumbprint": null,
+                    "toUpdate": null,
+                    "toUpdateIpBasedSsl": null,
+                    "ipBasedSslState": 0,
+                    "hostType": 1
+                  }
+                ],
+                "computeMode": null,
+                "serverFarm": null,
+                "serverFarmId": "/subscriptions/74b019a5-1983-44a6-aab1-eff47f02d8c9/resourceGroups/CinelSidney/providers/Microsoft.Web/serverfarms/ShopCET45SidneyPlan",
+                "reserved": false,
+                "isXenon": false,
+                "hyperV": false,
+                "lastModifiedTimeUtc": "2020-07-02T08:08:44.7",
+                "storageRecoveryDefaultState": "Running",
+                "contentAvailabilityState": 0,
+                "runtimeAvailabilityState": 0,
+                "siteConfig": {
+                  "numberOfWorkers": null,
+                  "defaultDocuments": null,
+                  "netFrameworkVersion": null,
+                  "phpVersion": null,
+                  "pythonVersion": null,
+                  "nodeVersion": null,
+                  "powerShellVersion": null,
+                  "linuxFxVersion": null,
+                  "windowsFxVersion": null,
+                  "requestTracingEnabled": null,
+                  "remoteDebuggingEnabled": null,
+                  "remoteDebuggingVersion": null,
+                  "httpLoggingEnabled": null,
+                  "azureMonitorLogCategories": null,
+                  "acrUseManagedIdentityCreds": false,
+                  "acrUserManagedIdentityID": null,
+                  "logsDirectorySizeLimit": null,
+                  "detailedErrorLoggingEnabled": null,
+                  "publishingUsername": null,
+                  "publishingPassword": null,
+                  "appSettings": null,
+                  "metadata": null,
+                  "connectionStrings": null,
+                  "machineKey": null,
+                  "handlerMappings": null,
+                  "documentRoot": null,
+                  "scmType": null,
+                  "use32BitWorkerProcess": null,
+                  "webSocketsEnabled": null,
+                  "alwaysOn": null,
+                  "javaVersion": null,
+                  "javaContainer": null,
+                  "javaContainerVersion": null,
+                  "appCommandLine": null,
+                  "managedPipelineMode": null,
+                  "virtualApplications": null,
+                  "winAuthAdminState": null,
+                  "winAuthTenantState": null,
+                  "customAppPoolIdentityAdminState": null,
+                  "customAppPoolIdentityTenantState": null,
+                  "runtimeADUser": null,
+                  "runtimeADUserPassword": null,
+                  "loadBalancing": null,
+                  "routingRules": null,
+                  "experiments": null,
+                  "limits": null,
+                  "autoHealEnabled": null,
+                  "autoHealRules": null,
+                  "tracingOptions": null,
+                  "vnetName": null,
+                  "cors": null,
+                  "push": null,
+                  "apiDefinition": null,
+                  "apiManagementConfig": null,
+                  "autoSwapSlotName": null,
+                  "localMySqlEnabled": null,
+                  "managedServiceIdentityId": null,
+                  "xManagedServiceIdentityId": null,
+                  "ipSecurityRestrictions": null,
+                  "scmIpSecurityRestrictions": null,
+                  "scmIpSecurityRestrictionsUseMain": null,
+                  "http20Enabled": null,
+                  "minTlsVersion": null,
+                  "ftpsState": null,
+                  "preWarmedInstanceCount": null,
+                  "healthCheckPath": null,
+                  "fileChangeAuditEnabled": null,
+                  "functionsRuntimeScaleMonitoringEnabled": null,
+                  "websiteTimeZone": null,
+                  "minimumElasticInstanceCount": 0
+                },
+                "deploymentId": "ShopCET45Sidney",
+                "trafficManagerHostNames": null,
+                "sku": "Free",
+                "scmSiteAlsoStopped": false,
+                "targetSwapSlot": null,
+                "hostingEnvironment": null,
+                "hostingEnvironmentProfile": null,
+                "clientAffinityEnabled": true,
+                "clientCertEnabled": false,
+                "clientCertMode": 0,
+                "clientCertExclusionPaths": null,
+                "hostNamesDisabled": false,
+                "domainVerificationIdentifiers": null,
+                "customDomainVerificationId": "781EF3F4E8B418887138A48434D0DEA666DC3320A5F5C3C8EE9F1190082B25B4",
+                "kind": "app",
+                "inboundIpAddress": "52.178.75.200",
+                "possibleInboundIpAddresses": "52.178.75.200",
+                "ftpUsername": "ShopCET45Sidney\\$ShopCET45Sidney",
+                "ftpsHostName": "ftps://waws-prod-am2-161.ftp.azurewebsites.windows.net/site/wwwroot",
+                "outboundIpAddresses": "52.178.75.200,52.178.94.222,52.178.102.126,52.178.88.128,52.178.91.167",
+                "possibleOutboundIpAddresses": "52.178.75.200,52.178.94.222,52.178.102.126,52.178.88.128,52.178.91.167,52.178.91.4,52.178.91.42",
+                "containerSize": 0,
+                "dailyMemoryTimeQuota": 0,
+                "suspendedTill": null,
+                "siteDisabledReason": 0,
+                "functionExecutionUnitsCache": null,
+                "maxNumberOfWorkers": null,
+                "homeStamp": "waws-prod-am2-161",
+                "cloningInfo": null,
+                "hostingEnvironmentId": null,
+                "tags": {
+                  "hidden-related:/subscriptions/74b019a5-1983-44a6-aab1-eff47f02d8c9/resourceGroups/CinelSidney/providers/Microsoft.Web/serverfarms/ShopCET45SidneyPlan": "empty"
+                },
+                "resourceGroup": "CinelSidney",
+                "defaultHostName": "shopcet45sidney.azurewebsites.net",
+                "slotSwapStatus": null,
+                "httpsOnly": true,
+                "redundancyMode": 0,
+                "inProgressOperationId": null,
+                "geoDistributions": null,
+                "privateEndpointConnections": [],
+                "buildVersion": null,
+                "targetBuildVersion": null
+              },
+              "identity": {
+                "type": "SystemAssigned",
+                "tenantId": "08c68d1a-db01-441a-a904-c02814e3771c",
+                "principalId": "1fe7b7df-8664-4b20-ba93-6d4bfb44cc8a"
+              },
+              "apiVersion": "2015-05-01"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
