@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ShopCET45.Web.Data;
 using ShopCET45.Web.Data.Entities;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace ShopCET45.Web.Controllers
 {
+    [Authorize] //Faz a verificação se o user estiver logado ou não. podemos fazer isso para action especifico.
     public class ProductsController : Controller
     {
 
@@ -80,7 +82,7 @@ namespace ShopCET45.Web.Controllers
                 }
                 var product = _converterHelper.ToProduct(model, path, true);
                 //Todo: Change for the logged user
-                product.User = await _userHelper.GetUserByEmailAsync("sidney-major@portugal.pt");
+                product.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                 await _productRepository.CreatAsync(product);
                 return RedirectToAction(nameof(Index));
             }
@@ -158,7 +160,7 @@ namespace ShopCET45.Web.Controllers
                     }
                     var product = _converterHelper.ToProduct(model, path, false);
                     //Todo: Change for the logged user
-                    product.User = await _userHelper.GetUserByEmailAsync("sidney-major@portugal.pt");
+                    product.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
                     await _productRepository.UpdateAsync(product);
                 }
                 catch(DbUpdateConcurrencyException)

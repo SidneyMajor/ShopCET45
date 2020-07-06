@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using ShopCET45.Web.Data.Entities;
+using ShopCET45.Web.Models;
 using System.Threading.Tasks;
 
 namespace ShopCET45.Web.Helpers
@@ -10,5 +11,9 @@ namespace ShopCET45.Web.Helpers
 
 
         Task<User> GetUserByEmailAsync(string email);
+
+        Task<SignInResult> LoginAsync(LoginViewModel model);
+
+        Task LogoutAsync();
     }
 }
