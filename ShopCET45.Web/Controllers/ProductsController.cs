@@ -17,11 +17,19 @@ namespace ShopCET45.Web.Controllers
         private readonly IProductRepository _productRepository;
 
         public readonly IUserHelper _userHelper;
+        private readonly IImageHelper _imageHelper;
+        private readonly IConverterHelper _converterHelper;
 
-        public ProductsController(IProductRepository productRepository, IUserHelper userHelper)
+        public ProductsController(
+            IProductRepository productRepository, 
+            IUserHelper userHelper,
+            IImageHelper imageHelper,
+            IConverterHelper converterHelper)
         {
             _productRepository = productRepository;
             _userHelper = userHelper;
+            _imageHelper = imageHelper;
+            _converterHelper = converterHelper;
         }
 
         // GET: Products
@@ -67,19 +75,10 @@ namespace ShopCET45.Web.Controllers
                 var path = string.Empty;
                 if(model.ImageFile !=null && model.ImageFile.Length > 0)
                 {
-                    var guid = Guid.NewGuid().ToString();
-                    var file = $"{guid}.jpg";
-                    path = Path.Combine(
-                        Directory.GetCurrentDirectory(),
-                        "wwwroot\\images\\Products",
-                       file);
-                    using(var stream = new FileStream(path, FileMode.Create))
-                    {
-                        await model.ImageFile.CopyToAsync(stream);
-                    }
-                    path = $"~/images/Products/{file}";
+                   
+                    path = await _imageHelper.UploadImageAsync(model.ImageFile,"Products");
                 }
-                var product = this.ToProduct(model, path);
+                var product = _converterHelper.ToProduct(model, path, true);
                 //Todo: Change for the logged user
                 product.User = await _userHelper.GetUserByEmailAsync("sidney-major@portugal.pt");
                 await _productRepository.CreatAsync(product);
@@ -88,7 +87,7 @@ namespace ShopCET45.Web.Controllers
             return View(model);
         }
 
-        private Product ToProduct(ProductViewModel model, string path)
+        /*private Product ToProduct(ProductViewModel model, string path)
         {
             return new Product
             {
@@ -102,7 +101,7 @@ namespace ShopCET45.Web.Controllers
                 Stock = model.Stock,
                 User = model.User
             };
-        }
+        }*/
 
 
         // GET: Products/Edit/5
@@ -119,11 +118,11 @@ namespace ShopCET45.Web.Controllers
                 return NotFound();
             }
 
-            var model = this.ToProductViewModel(product);
+            var model = _converterHelper.ToProductViewModel(product);
             return View(model);
         }
 
-        private ProductViewModel ToProductViewModel(Product product)
+       /* private ProductViewModel ToProductViewModel(Product product)
         {
             return new ProductViewModel
             {
@@ -137,7 +136,7 @@ namespace ShopCET45.Web.Controllers
                 Stock = product.Stock,
                 User = product.User
             };
-        }
+        }*/
 
 
         // POST: Products/Edit/5
@@ -155,20 +154,9 @@ namespace ShopCET45.Web.Controllers
                     var path = model.ImageUrl;
                     if(model.ImageFile != null && model.ImageFile.Length > 0)
                     {
-                        var guid = Guid.NewGuid().ToString();
-                        var file = $"{guid}.jpg";
-
-                        path = Path.Combine(
-                            Directory.GetCurrentDirectory(),
-                            "wwwroot\\images\\Products",
-                            file);
-                        using(var stream = new FileStream(path, FileMode.Create))
-                        {
-                            await model.ImageFile.CopyToAsync(stream);
-                        }
-                        path = $"~/images/Products/{file}";
+                        path = await _imageHelper.UploadImageAsync(model.ImageFile, "Products");
                     }
-                    var product = this.ToProduct(model, path);
+                    var product = _converterHelper.ToProduct(model, path, false);
                     //Todo: Change for the logged user
                     product.User = await _userHelper.GetUserByEmailAsync("sidney-major@portugal.pt");
                     await _productRepository.UpdateAsync(product);
