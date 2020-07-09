@@ -1,8 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using ShopCET45.Web.Helpers;
 using ShopCET45.Web.Models;
+using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ShopCET45.Web.Controllers
@@ -10,17 +16,20 @@ namespace ShopCET45.Web.Controllers
     public class AccountController : Controller
     {
         private readonly IUserHelper _userHelper;
+        private readonly IConfiguration _configuration;
 
-
-        public AccountController(IUserHelper userHelper)
+        public AccountController(
+            IUserHelper userHelper,
+            IConfiguration configuration)
         {
             _userHelper = userHelper;
+            _configuration = configuration;
         }
 
 
         public IActionResult Login()
         {
-            if(this.User.Identity.IsAuthenticated)
+            if (this.User.Identity.IsAuthenticated)
             {
                 return this.RedirectToAction("Index", "Home");
             }
@@ -31,12 +40,12 @@ namespace ShopCET45.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var result = await _userHelper.LoginAsync(model);
-                if(result.Succeeded)
+                if (result.Succeeded)
                 {
-                    if(this.Request.Query.Keys.Contains("ReturnUrl"))
+                    if (this.Request.Query.Keys.Contains("ReturnUrl"))
                     {
                         //Direção de retorno
                         return this.Redirect(this.Request.Query["ReturnUrl"].First());
@@ -66,11 +75,11 @@ namespace ShopCET45.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(RegisterNewUserViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var user = await _userHelper.GetUserByEmailAsync(model.Username);
 
-                if(user == null)
+                if (user == null)
                 {
                     user = new Data.Entities.User
                     {
@@ -81,7 +90,7 @@ namespace ShopCET45.Web.Controllers
                     };
 
                     var result = await _userHelper.AddUserAsync(user, model.Password);
-                    if(result != IdentityResult.Success)
+                    if (result != IdentityResult.Success)
                     {
                         this.ModelState.AddModelError(string.Empty, "The user couldn't be created.");
                         return this.View(model);
@@ -96,7 +105,7 @@ namespace ShopCET45.Web.Controllers
                     };
 
                     var result2 = await _userHelper.LoginAsync(loginViewModel);
-                    if(result2.Succeeded)
+                    if (result2.Succeeded)
                     {
                         return this.RedirectToAction("Index", "Home");
                     }
@@ -119,7 +128,7 @@ namespace ShopCET45.Web.Controllers
             var model = new ChangeUserViewModel();
 
 
-            if(user != null)
+            if (user != null)
             {
                 model.FirstName = user.FirstName;
                 model.LastName = user.LastName;
@@ -130,16 +139,16 @@ namespace ShopCET45.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangeUser(ChangeUserViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
-                if(user != null)
+                if (user != null)
                 {
                     user.FirstName = model.FirstName;
                     user.LastName = model.LastName;
 
                     var response = await _userHelper.UpdateUserAsync(user);
-                    if(response.Succeeded)
+                    if (response.Succeeded)
                     {
                         ViewBag.UserMessage = "User update!";
                     }
@@ -165,13 +174,13 @@ namespace ShopCET45.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> ChangePassword(ChangePasswordViewModel model)
         {
-            if(this.ModelState.IsValid)
+            if (this.ModelState.IsValid)
             {
                 var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
-                if(user != null)
+                if (user != null)
                 {
                     var result = await _userHelper.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
-                    if(result.Succeeded)
+                    if (result.Succeeded)
                     {
                         return this.RedirectToAction("ChangeUser");
                     }
@@ -188,6 +197,50 @@ namespace ShopCET45.Web.Controllers
 
             return this.View(model);
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateToken([FromBody] LoginViewModel model)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var user = await _userHelper.GetUserByEmailAsync(model.Username);
+                if (user != null)
+                {
+                    var result = await _userHelper.ValidatePasswordAsync(
+                        user,
+                        model.Password);
+
+                    if (result.Succeeded)
+                    {
+                        var claims = new[]
+                        {
+                              new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                              new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+                        };
+
+                        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
+                        var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+                        var token = new JwtSecurityToken(
+                            _configuration["Tokens:Issuer"],
+                            _configuration["Tokens:Audience"],
+                            claims,
+                            expires: DateTime.UtcNow.AddDays(15),
+                            signingCredentials: credentials);
+                        var results = new
+                        {
+                            token = new JwtSecurityTokenHandler().WriteToken(token),
+                            expiration = token.ValidTo
+                        };
+
+                        return this.Created(string.Empty, results);
+                    }
+                }
+            }
+
+            return this.BadRequest();
+        }
+
 
     }
 }
