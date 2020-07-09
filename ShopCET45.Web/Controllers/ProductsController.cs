@@ -57,7 +57,7 @@ namespace ShopCET45.Web.Controllers
             return View(product);
         }
 
-
+        [Authorize(Roles ="Admin")]
         // GET: Products/Create
         public IActionResult Create()
         {
@@ -105,7 +105,7 @@ namespace ShopCET45.Web.Controllers
             };
         }*/
 
-
+        [Authorize(Roles = "Admin")]
         // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -179,7 +179,7 @@ namespace ShopCET45.Web.Controllers
             return View(model);
         }
 
-
+        [Authorize(Roles = "Admin")]
         // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
