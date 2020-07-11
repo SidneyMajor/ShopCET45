@@ -51,6 +51,8 @@ namespace ShopCET45.Web.Data
             }
 
             var isInRole = await _userHelper.IsUserInRoleAsync(user, "Admin");
+            var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+            await _userHelper.ConfirmEmailAsync(user, token);
 
             if (!isInRole)
             {
