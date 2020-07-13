@@ -81,6 +81,13 @@ namespace ShopCET45.Web
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            //Redirecionar para as paginas de erros configuradas 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/Account/NotAuthorized";
+                options.AccessDeniedPath = "/Account/NotAuthorized";
+            });
+
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -97,6 +104,9 @@ namespace ShopCET45.Web
                 app.UseExceptionHandler("/Home/Error");
                 app.UseHsts();
             }
+
+            //controlar as paginas de erro do core
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
