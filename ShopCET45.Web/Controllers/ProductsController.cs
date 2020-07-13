@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using ShopCET45.Web.Data;
+using ShopCET45.Web.Data.Repositories;
 using ShopCET45.Web.Data.Entities;
 using ShopCET45.Web.Helpers;
 using ShopCET45.Web.Models;

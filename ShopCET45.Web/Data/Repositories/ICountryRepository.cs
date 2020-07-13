@@ -4,10 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ShopCET45.Web.Data
+namespace ShopCET45.Web.Data.Repositories
 {
-    public interface IProductRepository: IGenericRepository<Product>
+    public interface ICountryRepository: IGenericRepository<Country>
     {
-       IQueryable GetAllWithUsers();
     }
 }

@@ -12,6 +12,15 @@ namespace ShopCET45.Web.Data
         public DbSet<Country> Countries { get; set; }
 
 
+        public DbSet<Order> Orders { get; set; }
+
+
+        public DbSet<OrderDetail> OrderDetails { get; set; }
+
+
+        public DbSet<OrderDetailTemp> OrderDetailsTemp { get; set; }
+
+
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
@@ -20,6 +29,13 @@ namespace ShopCET45.Web.Data
         {
             modelbuilder.Entity<Product>()
                 .Property(p => p.Price).HasColumnType("decimal(18,2)");
+
+            modelbuilder.Entity<OrderDetail>()
+               .Property(o => o.Price).HasColumnType("decimal(18,2)");
+           
+
+            modelbuilder.Entity<OrderDetailTemp>()
+               .Property(o => o.Price).HasColumnType("decimal(18,2)");
 
             //Cascading Delete Rule
             var cascadeFKs = modelbuilder.Model

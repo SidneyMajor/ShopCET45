@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace ShopCET45.Web.Data
+namespace ShopCET45.Web.Data.Repositories
 {
     public interface IRepository
     {

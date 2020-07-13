@@ -1,6 +1,6 @@
 ﻿using ShopCET45.Web.Data.Entities;
 
-namespace ShopCET45.Web.Data
+namespace ShopCET45.Web.Data.Repositories
 {
     public class CountryRepository : GenericRepository<Country>, ICountryRepository
     {

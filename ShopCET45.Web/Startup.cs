@@ -7,10 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using ShopCET45.Web.Data;
+using ShopCET45.Web.Data.Repositories;
 using ShopCET45.Web.Data.Entities;
 using ShopCET45.Web.Helpers;
 using System.Text;
+using ShopCET45.Web.Data;
 
 namespace ShopCET45.Web
 {
@@ -70,6 +71,7 @@ namespace ShopCET45.Web
             services.AddScoped<IImageHelper, ImageHelper>();
             services.AddScoped<IConverterHelper, ConverterHelper>();
             services.AddScoped<IMailHelper, MailHelper>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             //services.AddSingleton cria e fica ate a app for fechada
 
             //services.AddScoped cria, usa apaga e cria novamente.
