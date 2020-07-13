@@ -1,4 +1,5 @@
-﻿using ShopCET45.Web.Data.Entities;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using ShopCET45.Web.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,6 +9,8 @@ namespace ShopCET45.Web.Data.Repositories
 {
     public interface IProductRepository: IGenericRepository<Product>
     {
-       IQueryable GetAllWithUsers();
+        IQueryable GetAllWithUsers();
+
+        IEnumerable<SelectListItem> GetComboProducts();
     }
 }

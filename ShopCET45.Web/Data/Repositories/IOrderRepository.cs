@@ -1,4 +1,5 @@
 ﻿using ShopCET45.Web.Data.Entities;
+using ShopCET45.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,5 +11,15 @@ namespace ShopCET45.Web.Data.Repositories
     {
         //get a order 
         Task<IQueryable<Order>> GetOrdersAsync(string username);
+
+
+        //get a order temp
+        Task<IQueryable<OrderDetailTemp>> GetDetailTempsAsync(string username);
+
+
+        Task AddItemToOrderAsync(AddItemViewModel model, string username);
+
+
+        Task ModifyOrderDetailTempQuantityAsync(int id, double quantity);
     }
 }

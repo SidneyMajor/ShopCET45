@@ -18,13 +18,13 @@ namespace ShopCET45.Web.Data.Entities
         [Required]
         public Product Product { get; set; }
 
-        [DisplayFormat(DataFormatString ="{0:C2")]
+        [DisplayFormat(DataFormatString ="{0:C2}")]
         public decimal Price { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:N2")]
+        [DisplayFormat(DataFormatString = "{0:N2}")]
         public double Quantity { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:C2")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
         public decimal Value { get { return this.Price * (decimal)this.Quantity; } }
     }
 }

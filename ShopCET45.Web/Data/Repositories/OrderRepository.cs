@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShopCET45.Web.Data.Entities;
 using ShopCET45.Web.Helpers;
+using ShopCET45.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,60 @@ namespace ShopCET45.Web.Data.Repositories
         {
             _context = context;
            _userHelper = userHelper;
+        }
+
+        public async Task AddItemToOrderAsync(AddItemViewModel model, string username)
+        {
+            var user = await _userHelper.GetUserByEmailAsync(username);
+            if (user == null)
+            {
+                return;
+            }
+
+            var product = await _context.Products.FindAsync(model.ProductId);
+
+            if (product==null)
+            {
+                return;
+            }
+
+            var orderDetailTemp = await _context.OrderDetailsTemp
+                .Where(odt => odt.User == user && odt.Product == product)
+                .FirstOrDefaultAsync();
+            if (orderDetailTemp==null)
+            {
+                orderDetailTemp = new OrderDetailTemp
+                {
+                    Price = product.Price,
+                    Product = product,
+                    Quantity = model.Quantity,
+                    User = user,
+                };
+
+                _context.OrderDetailsTemp.Add(orderDetailTemp);
+            }
+            else
+            {
+                orderDetailTemp.Quantity += model.Quantity;
+                _context.OrderDetailsTemp.Update(orderDetailTemp);
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<IQueryable<OrderDetailTemp>> GetDetailTempsAsync(string username)
+        {
+            var user = await _userHelper.GetUserByEmailAsync(username);
+
+            if (user == null)
+            {
+                return null;
+            }
+            
+
+            return _context.OrderDetailsTemp.Include(o => o.Product)
+                .Where(o => o.User == user)
+                .OrderBy(o => o.Product.Name);
         }
 
         public async Task<IQueryable<Order>> GetOrdersAsync(string username)
@@ -39,6 +94,25 @@ namespace ShopCET45.Web.Data.Repositories
                 .ThenInclude(i => i.Product)
                 .Where(o => o.User == user)
                 .OrderByDescending(o => o.OrderDate);
+        }
+
+        public async Task ModifyOrderDetailTempQuantityAsync(int id, double quantity)
+        {
+            var orderDetailTemp = await _context.OrderDetailsTemp.FindAsync(id);
+
+            if (orderDetailTemp==null)
+            {
+                return;
+            }
+
+            orderDetailTemp.Quantity += quantity;
+
+            if (orderDetailTemp.Quantity>0)
+            {
+
+                _context.OrderDetailsTemp.Update(orderDetailTemp);
+                await _context.SaveChangesAsync();
+            }
         }
     }
 }
