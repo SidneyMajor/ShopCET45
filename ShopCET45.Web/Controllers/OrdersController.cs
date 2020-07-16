@@ -105,5 +105,45 @@ namespace ShopCET45.Web.Controllers
         }
 
 
+
+        public async Task<IActionResult> DeliverOrder(int? id)
+        {
+           
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var order = await _orderRepository.GetOrdersAsync(id.Value);
+
+            if (order==null)
+            {
+                return NotFound();
+            }
+
+            var model = new DeliverViewModel
+            {
+                Id = order.Id,
+                DeliveryDate = DateTime.Today
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeliverOrder(DeliverViewModel model)
+        {
+
+            if (ModelState.IsValid)
+            {
+                await _orderRepository.DelivarOrder(model);
+
+                return RedirectToAction("Index");
+            }
+
+            return View();
+        }
+
+
     }
 }

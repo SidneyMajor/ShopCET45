@@ -111,6 +111,21 @@ namespace ShopCET45.Web.Data.Repositories
             await _context.SaveChangesAsync();
         }
 
+        public async Task DelivarOrder(DeliverViewModel model)
+        {
+            var order = await _context.Orders.FindAsync(model.Id);
+
+            if (order==null)
+            {
+                return;
+            }
+
+            order.DeliveryDate = model.DeliveryDate;
+            _context.Orders.Update(order);
+
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<IQueryable<OrderDetailTemp>> GetDetailTempsAsync(string username)
         {
             var user = await _userHelper.GetUserByEmailAsync(username);
@@ -148,6 +163,11 @@ namespace ShopCET45.Web.Data.Repositories
                 .ThenInclude(i => i.Product)
                 .Where(o => o.User == user)
                 .OrderByDescending(o => o.OrderDate);
+        }
+
+        public async Task<Order> GetOrdersAsync(int id)
+        {
+            return await _context.Orders.FindAsync(id);
         }
 
         public async Task ModifyOrderDetailTempQuantityAsync(int id, double quantity)
