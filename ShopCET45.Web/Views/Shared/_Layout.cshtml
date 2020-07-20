@@ -15,6 +15,7 @@
               asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
               asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
         <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+        <link href="~/lib/font-awesome/css/all.css" rel="stylesheet" />
     </environment>
 </head>
 <body>
@@ -43,6 +44,7 @@
                             <ul class="dropdown-menu">
                                 <li><a asp-area="" asp-controller="" asp-action="">Users</a></li>
                                 <li><a asp-area="" asp-controller="" asp-action="">Roles</a></li>
+                                <li><a asp-area="" asp-controller="Countries" asp-action="Index">Countries</a></li>
                             </ul>
                         </li>
                     }

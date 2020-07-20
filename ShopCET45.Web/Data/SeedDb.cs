@@ -2,6 +2,7 @@
 using ShopCET45.Web.Data.Entities;
 using ShopCET45.Web.Helpers;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -30,6 +31,24 @@ namespace ShopCET45.Web.Data
             await _userHelper.CheckRoleAsync("Admin");
             await _userHelper.CheckRoleAsync("Customer");
 
+            if (!_context.Countries.Any())
+            {
+                var cities = new List<City>();
+                cities.Add(new City { Name = "Lisboa" });
+                cities.Add(new City { Name = "Porto" });
+                cities.Add(new City { Name = "Faro" });
+                cities.Add(new City { Name = "Coimbra" });
+
+                _context.Countries.Add(new Country
+                {
+                    Cities = cities,
+                    Name = "Portugal"
+                });
+
+                await _context.SaveChangesAsync();
+
+            }
+
             var user = await _userHelper.GetUserByEmailAsync("sidney-major@portugal.pt");
 
             if(user == null)
@@ -40,7 +59,10 @@ namespace ShopCET45.Web.Data
                     LastName = "major",
                     Email = "sidney-major@portugal.pt",
                     UserName = "sidney-major@portugal.pt",
-                    PhoneNumber = "211234567"
+                    PhoneNumber = "211234567",
+                    Address="Rua Maravilha 31 2º Dº",
+                    CityId = _context.Countries.FirstOrDefault().Cities.FirstOrDefault().Id,
+                    City = _context.Countries.FirstOrDefault().Cities.FirstOrDefault()
                 };
 
                 var result = await _userHelper.AddUserAsync(user, "123456");//Criar o user com aquela password
