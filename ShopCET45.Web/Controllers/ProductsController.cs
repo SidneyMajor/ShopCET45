@@ -57,7 +57,7 @@ namespace ShopCET45.Web.Controllers
             return View(product);
         }
 
-        [Authorize(Roles ="Admin")]
+        //[Authorize(Roles ="Admin")]
         // GET: Products/Create
         public IActionResult Create()
         {

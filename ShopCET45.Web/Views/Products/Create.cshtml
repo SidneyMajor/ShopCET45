@@ -12,7 +12,8 @@
     <div class="col-md-4">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <partial name="_ProductParcial" />
+            @*<div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
@@ -48,7 +49,7 @@
                 <label asp-for="Stock" class="control-label"></label>
                 <input asp-for="Stock" class="form-control" />
                 <span asp-validation-for="Stock" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <button type="submit" class="btn btn-primary"><i class="fa fa-save"> Create</i></button> 
                 @*<input type="submit" value="Create" class="btn btn-primary" />*@

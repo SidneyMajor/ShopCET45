@@ -136,8 +136,24 @@ namespace ShopCET45.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _countryRepository.CreatAsync(country);
-                return RedirectToAction(nameof(Index));
+
+                try
+                {
+                    await _countryRepository.CreatAsync(country);
+                    return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+
+                    if (ex.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Already there is a country with that name!!");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, ex.InnerException.Message);
+                    }
+                }
             }
 
             return View(country);

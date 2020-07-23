@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Org.BouncyCastle.Crypto.Tls;
 using ShopCET45.Web.Data.Entities;
 using ShopCET45.Web.Models;
 using System;
@@ -36,6 +37,6 @@ namespace ShopCET45.Web.Data.Repositories
 
 		Task<Country> GetCountryAsync(City city);
 
-        //Task CreateAsync(Country country);
+       Task<bool> GetCountryByNameAsync(string name);
     }
 }

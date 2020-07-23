@@ -31,6 +31,11 @@ namespace ShopCET45.Web.Data
 
         protected override void OnModelCreating(ModelBuilder modelbuilder)
         {
+            //Colocar o nome unico para o pais
+            modelbuilder.Entity<Country>()
+                .HasIndex(c => c.Name)
+                .IsUnique();
+
             modelbuilder.Entity<Product>()
                 .Property(p => p.Price).HasColumnType("decimal(18,2)");
 

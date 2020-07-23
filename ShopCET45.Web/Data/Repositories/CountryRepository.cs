@@ -108,6 +108,15 @@ namespace ShopCET45.Web.Data.Repositories
             return await _context.Countries.Where(c => c.Cities.Any(ci => ci.Id == city.Id)).FirstOrDefaultAsync();
         }
 
+        public async Task<bool> GetCountryByNameAsync(string name)
+        {
+            var client=await _context.Countries.FindAsync(name);
+            if (client!=null)
+            {
+                return true;
+            }
+            return false;
+        }
 
         public async Task<Country> GetCountryWithCitiesAsync(int id)
         {
